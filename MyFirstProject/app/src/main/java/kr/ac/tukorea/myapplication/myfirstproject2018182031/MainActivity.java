@@ -16,11 +16,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btn = findViewById(R.id.pushMeButton);
         btn.setOnClickListener(this);
+
+        btn = findViewById(R.id.another);
+        btn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        TextView tv = findViewById(R.id.snumTextView);
-        tv.setText("PushMe");
+        TextView tv;
+        switch (view.getId()){
+            case R.id.pushMeButton:
+                tv = findViewById(R.id.snumTextView);
+                tv.setText("PushMe");
+                break;
+            case R.id.another:
+                tv = findViewById(R.id.snumTextView);
+                tv.setText("Another");
+                    break;
+        }
+
     }
 }
