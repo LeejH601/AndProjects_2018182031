@@ -7,33 +7,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button btn = findViewById(R.id.pushMeButton);
-        btn.setOnClickListener(this);
+        btn.setOnClickListener(pushMeOnClickHandler);
 
         btn = findViewById(R.id.another);
-        btn.setOnClickListener(this);
+        btn.setOnClickListener(anotherOnClickHandler);
     }
 
-    @Override
-    public void onClick(View view) {
-        TextView tv;
-        switch (view.getId()){
-            case R.id.pushMeButton:
-                tv = findViewById(R.id.snumTextView);
-                tv.setText("PushMe");
-                break;
-            case R.id.another:
-                tv = findViewById(R.id.snumTextView);
-                tv.setText("Another");
-                    break;
+    private View.OnClickListener pushMeOnClickHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            TextView tv = findViewById(R.id.snumTextView);
+            tv.setText("PushMe");
         }
-
-    }
+    };
+    private View.OnClickListener anotherOnClickHandler = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            TextView tv = findViewById(R.id.snumTextView);
+            tv.setText("Another");
+        }
+    };
 }
