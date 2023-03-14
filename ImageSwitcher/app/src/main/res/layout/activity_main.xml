@@ -16,7 +16,9 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prev"/>
+            android:text="Prev"
+            android:onClick="onBtnPrev"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,11 +31,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"/>
+            android:text="Next"
+            android:onClick="onBtnNext"
+            />
 
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/MainSrcImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
