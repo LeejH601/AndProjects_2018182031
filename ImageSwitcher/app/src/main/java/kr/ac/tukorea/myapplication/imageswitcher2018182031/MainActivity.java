@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         this.imgView = findViewById(R.id.MainImageView);
         this.tv = findViewById(R.id.pageTextView);
         tv.setText((pageIndex+1) + " / " + MAX_IMG_COUNT);
+        this.PrevButton = findViewById(R.id.PrevBtn);
+        this.NextButton = findViewById(R.id.NextBtn);
+        PrevButton.setEnabled(this.pageIndex > 0);
+        NextButton.setEnabled(this.pageIndex < MAX_IMG_COUNT-1);
     }
 
     public void onBtnPrev(View view) {
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private ImageView imgView;
     private TextView tv;
+    private Button PrevButton;
+    private Button NextButton;
     private final int MAX_IMG_COUNT = 6;
 
     private void setPage(int index){
@@ -50,5 +57,7 @@ public class MainActivity extends AppCompatActivity {
         imgView.setImageResource(resId);
         this.pageIndex = index;
         tv.setText((pageIndex+1) + " / " + MAX_IMG_COUNT);
+        PrevButton.setEnabled(index > 0);
+        NextButton.setEnabled(index < MAX_IMG_COUNT-1);
     }
 }
