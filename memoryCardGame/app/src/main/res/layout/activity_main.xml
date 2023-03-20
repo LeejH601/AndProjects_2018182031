@@ -29,6 +29,98 @@
             style="@style/CardButton">
 
         </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_5s"
+            style="@style/CardButton">
+
+        </ImageButton>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:src="@mipmap/card_as"
+            style="@style/CardButton">
+
+        </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_jc"
+            style="@style/CardButton">
+
+        </ImageButton>
+
+        <ImageButton
+            android:src="@mipmap/card_kd"
+            style="@style/CardButton">
+
+        </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_qh"
+            style="@style/CardButton">
+
+        </ImageButton>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:src="@mipmap/card_2c"
+            style="@style/CardButton">
+
+        </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_3d"
+            style="@style/CardButton">
+
+        </ImageButton>
+
+        <ImageButton
+            android:src="@mipmap/card_4h"
+            style="@style/CardButton">
+
+        </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_5s"
+            style="@style/CardButton">
+
+        </ImageButton>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:src="@mipmap/card_as"
+            style="@style/CardButton">
+
+        </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_jc"
+            style="@style/CardButton">
+
+        </ImageButton>
+
+        <ImageButton
+            android:src="@mipmap/card_kd"
+            style="@style/CardButton">
+
+        </ImageButton>
+        <ImageButton
+            android:src="@mipmap/card_qh"
+            style="@style/CardButton">
+
+        </ImageButton>
     </LinearLayout>
 
     <LinearLayout
