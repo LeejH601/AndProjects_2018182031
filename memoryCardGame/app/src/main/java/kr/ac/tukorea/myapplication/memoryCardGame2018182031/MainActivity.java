@@ -2,9 +2,11 @@ package kr.ac.tukorea.myapplication.memoryCardGame2018182031;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.HashMap;
 
@@ -42,5 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onBtnCard(View view){
         Log.d(TAG, "Card ID = " +getIndeWithId(view.getId()));
+        ImageButton btn = (ImageButton) view;
+        btn.setImageResource(R.mipmap.card_blue_back);
     }
 }
