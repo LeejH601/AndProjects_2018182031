@@ -13,6 +13,18 @@
         android:layout_weight="1"
         android:orientation="horizontal"
         >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/card_2c">
+
+        </ImageButton>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/card_3d">
+
+        </ImageButton>
     </LinearLayout>
 
     <LinearLayout
