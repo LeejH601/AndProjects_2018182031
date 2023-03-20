@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,17 +48,18 @@ public class MainActivity extends AppCompatActivity {
     }
     private ImageView imgView;
     private TextView tv;
-    private Button PrevButton;
-    private Button NextButton;
+    private ImageButton PrevButton;
+    private ImageButton NextButton;
     private final int MAX_IMG_COUNT = 6;
 
     private void setPage(int index){
         if(index < 0 || index > MAX_IMG_COUNT-1) return;
         int resId = IMG_RES_IDS[index];
         imgView.setImageResource(resId);
-        this.pageIndex = index;
-        tv.setText((pageIndex+1) + " / " + MAX_IMG_COUNT);
+        tv.setText((index + 1) + " / " + MAX_IMG_COUNT);
+
         PrevButton.setEnabled(index > 0);
         NextButton.setEnabled(index < MAX_IMG_COUNT-1);
+        this.pageIndex = index;
     }
 }

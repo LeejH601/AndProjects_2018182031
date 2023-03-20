@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         >
 
-        <Button
+        <ImageButton
             android:id="@+id/PrevBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prev"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/prev"
             android:onClick="onBtnPrev"
             />
 
@@ -30,11 +30,11 @@
             android:textSize="24sp"
             android:text="1/5"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/NextBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/next"
             android:onClick="onBtnNext"
             />
 
