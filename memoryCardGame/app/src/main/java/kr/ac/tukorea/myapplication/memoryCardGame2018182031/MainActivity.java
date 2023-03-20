@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        scoreTextView = findViewById(R.id.scoreTextView);
+
         for (int i = 0;i< BUTTON_IDS.length;++i){
             ImageButton btn = findViewById(BUTTON_IDS[i]);
             btn.setTag(resIds[i]);
@@ -55,14 +58,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ImageButton previousButton;
+    private TextView scoreTextView;
+    private int flips = 0;
     public void onBtnCard(View view){
         Log.d(TAG, "Card ID = " +getIndeWithId(view.getId()));
         ImageButton btn = (ImageButton) view;
-        btn.setImageResource(R.mipmap.card_blue_back);
-        if(previousButton != null){
-            int resId = (Integer)previousButton.getTag();
-            previousButton.setImageResource(resId);
+        if (btn == previousButton) {
+            // 같은 카드가 눌리면 무시한다
+            return;
         }
+
+        int resId = (Integer)btn.getTag(); // 이미지 리소스 아이디가 Tag 로 매달려 있다
+        btn.setImageResource(resId);
+
+        if (previousButton != null) {
+            int prevResId = (Integer)previousButton.getTag(); // 이전 카드의 tag 를 살펴본다
+            if (resId == prevResId) {
+                btn.setVisibility(View.INVISIBLE);
+                previousButton.setVisibility(View.INVISIBLE);
+                previousButton = null;
+                return;
+            } else {
+                // 이전의 카드는 뒷면이 보이도록 되돌려둔다
+                previousButton.setImageResource(R.mipmap.card_blue_back);
+            };
+        }
+        setFlips(flips + 1);
         previousButton = btn;
+    }
+
+    private void setFlips(int flips) {
+        this.flips = flips;
+        scoreTextView.setText("Flips: " + flips);
     }
 }

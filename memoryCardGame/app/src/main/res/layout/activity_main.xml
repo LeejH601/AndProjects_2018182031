@@ -10,31 +10,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/scoreTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            android:text="Flips: 0"
+            />
+        <!--        <Button-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Restart"-->
+        <!--            android:onClick="onBtnRestart"-->
+        <!--            />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal"
         >
         <ImageButton
             android:id="@+id/card_00"
-            android:src="@mipmap/card_2c"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_01"
-            android:src="@mipmap/card_3d"
             style="@style/CardButton">
 
         </ImageButton>
 
         <ImageButton
             android:id="@+id/card_02"
-            android:src="@mipmap/card_4h"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_03"
-            android:src="@mipmap/card_5s"
             style="@style/CardButton">
 
         </ImageButton>
@@ -48,26 +66,22 @@
         >
         <ImageButton
             android:id="@+id/card_10"
-            android:src="@mipmap/card_as"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_11"
-            android:src="@mipmap/card_jc"
             style="@style/CardButton">
 
         </ImageButton>
 
         <ImageButton
             android:id="@+id/card_12"
-            android:src="@mipmap/card_kd"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_13"
-            android:src="@mipmap/card_qh"
             style="@style/CardButton">
 
         </ImageButton>
@@ -81,26 +95,22 @@
         >
         <ImageButton
             android:id="@+id/card_20"
-            android:src="@mipmap/card_2c"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_21"
-            android:src="@mipmap/card_3d"
             style="@style/CardButton">
 
         </ImageButton>
 
         <ImageButton
             android:id="@+id/card_22"
-            android:src="@mipmap/card_4h"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_23"
-            android:src="@mipmap/card_5s"
             style="@style/CardButton">
 
         </ImageButton>
@@ -114,26 +124,22 @@
         >
         <ImageButton
             android:id="@+id/card_30"
-            android:src="@mipmap/card_as"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_31"
-            android:src="@mipmap/card_jc"
             style="@style/CardButton">
 
         </ImageButton>
 
         <ImageButton
             android:id="@+id/card_32"
-            android:src="@mipmap/card_kd"
             style="@style/CardButton">
 
         </ImageButton>
         <ImageButton
             android:id="@+id/card_33"
-            android:src="@mipmap/card_qh"
             style="@style/CardButton">
 
         </ImageButton>
