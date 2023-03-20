@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int[] BUTTON_IDS = new int[]{
             R.id.card_00,R.id.card_01,R.id.card_02,R.id.card_03,
@@ -15,16 +18,21 @@ public class MainActivity extends AppCompatActivity {
             R.id.card_30,R.id.card_31,R.id.card_32,R.id.card_33,
     };
 
-
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static HashMap<Integer, Integer> idMap;
+    static{
+        idMap = new HashMap<>();
+        for (int i =0;i<BUTTON_IDS.length;++i){
+            idMap.put(BUTTON_IDS[i], i);
+        }
+    }
 
     private static int getIndeWithId(int id) {
-        for(int i =0; i<BUTTON_IDS.length; i++) {
-            if(BUTTON_IDS[i] == id){
-                return i;
-            }
+        Integer index = idMap.get(id);
+        if(index == null){
+            Log.e(TAG, "Cannot find the button with id : " + id);
+            return -1;
         }
-        return -1;
+        return index;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBtnCard(View view){
-        Log.d(TAG, "Card ID = " + view.getId());
+        Log.d(TAG, "Card ID = " +getIndeWithId(view.getId()));
     }
 }
