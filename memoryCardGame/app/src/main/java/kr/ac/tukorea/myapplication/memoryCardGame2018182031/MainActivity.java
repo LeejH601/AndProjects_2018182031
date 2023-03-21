@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton btn = (ImageButton) view;
         if (btn == previousButton) {
             // 같은 카드가 눌리면 무시하고 Toast를 보여줌
-            Toast.makeText(this, "Same Card", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.same_card_toast, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -116,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setFlips(int flips) {
         this.flips = flips;
-        scoreTextView.setText("Flips: " + flips);
+        //scoreTextView.setText("Flips: " + flips);
+        String text = getString(R.string.score_flips_fmt, flips);
+        scoreTextView.setText(text);
     }
 
     public void onBtnRestart(View view) {
@@ -124,16 +126,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void askRetry() {
-        new AlertDialog.Builder(this).setTitle("Restart")
-                .setMessage("Do you really want to restart the game?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setTitle(R.string.restart_dlg_title)
+                .setMessage(R.string.restart_dlg_msg)
+                .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         startGame();
                         Log.d(TAG, "Restart Here");
                     }
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(R.string.common_no, null)
                 .create()
                 .show();
     }
