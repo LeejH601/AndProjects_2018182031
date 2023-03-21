@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+import java.util.Random;
 
 import java.util.HashMap;
 
@@ -53,20 +55,39 @@ public class MainActivity extends AppCompatActivity {
 
         scoreTextView = findViewById(R.id.scoreTextView);
 
+        startGame();
+    }
+
+    private void startGame() {
+        setFlips(0); // 이것도 잊지말고 하자.
+        openCardCount = BUTTON_IDS.length;
+
+        Random r = new Random();
+        for (int i = 0; i < resIds.length; i++) {
+            int t = r.nextInt(resIds.length);
+            int id = resIds[t];
+            resIds[t] = resIds[i];
+            resIds[i] = id;
+        }
+
         for (int i = 0;i< BUTTON_IDS.length;++i){
             ImageButton btn = findViewById(BUTTON_IDS[i]);
             btn.setTag(resIds[i]);
+            btn.setVisibility(View.VISIBLE);
+            btn.setImageResource(R.mipmap.card_blue_back);
         }
     }
 
     private ImageButton previousButton;
     private TextView scoreTextView;
     private int flips = 0;
+    private int openCardCount = 0;
     public void onBtnCard(View view){
         Log.d(TAG, "Card ID = " +getIndeWithId(view.getId()));
         ImageButton btn = (ImageButton) view;
         if (btn == previousButton) {
-            // 같은 카드가 눌리면 무시한다
+            // 같은 카드가 눌리면 무시하고 Toast를 보여줌
+            Toast.makeText(this, "Same Card", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -79,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 btn.setVisibility(View.INVISIBLE);
                 previousButton.setVisibility(View.INVISIBLE);
                 previousButton = null;
+                openCardCount -= 2;
+                if (openCardCount == 0) {
+                    askRetry();
+                }
                 return;
             } else {
                 // 이전의 카드는 뒷면이 보이도록 되돌려둔다
@@ -99,18 +124,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void askRetry() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Restart");
-        builder.setMessage("Do you really want to restart the game?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, "Restart Here");
-            }
-        });
-        builder.setNegativeButton("No", null);
-
-        AlertDialog dlg = builder.create();
-        dlg.show();
+        new AlertDialog.Builder(this).setTitle("Restart")
+                .setMessage("Do you really want to restart the game?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startGame();
+                        Log.d(TAG, "Restart Here");
+                    }
+                })
+                .setNegativeButton("No", null)
+                .create()
+                .show();
     }
 }
