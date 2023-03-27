@@ -18,7 +18,7 @@ import android.view.View;
  */
 public class GameView extends View {
     private static final String TAG = GameView.class.getSimpleName();
-    private Paint paint;
+    private Paint paint, facePaint, outlinePaint;
     private Rect rect;
     private RectF ovalRect;
 
@@ -44,6 +44,12 @@ public class GameView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(5);
 
+        facePaint = new Paint();
+        facePaint.setColor(Color.YELLOW);
+
+        outlinePaint = new Paint();
+        outlinePaint.setColor(Color.BLACK);
+        outlinePaint.setStyle(Paint.Style.STROKE);
     }
 
     private void calcSize() {
@@ -57,6 +63,8 @@ public class GameView extends View {
 
         rect = new Rect(paddingLeft, paddingTop, getWidth() - paddingRight, getHeight() - paddingBottom);
         ovalRect = new RectF(rect.left, rect.top, rect.right, rect.bottom);
+
+        outlinePaint.setStrokeWidth(2);
     }
 
     @Override
@@ -72,12 +80,32 @@ public class GameView extends View {
 
         // TODO: consider storing these as member variables to reduce
         // allocations per draw cycle.
-        canvas.drawRect(rect, paint);
+        drawSmiley(canvas, rect.left, rect.top, rect.width(), rect.height());
+    }
+
+    private void drawSmiley(Canvas canvas, float left, float top, float width, float height) {
+        canvas.save();
+        setCanvasRect(canvas, left, top, width, height);
         drawSmiley(canvas);
+        canvas.restore();
+        Log.i(TAG, "saveCount=" + canvas.getSaveCount());
+    }
+
+    private void setCanvasRect(Canvas canvas, float left, float top, float width, float height) {
+        Log.i(TAG, "setCanvasRect("+left+","+top+","+width+","+height+"), saveCount=" + canvas.getSaveCount());
+        canvas.translate(left, top);
+        canvas.scale(width / 100f, height / 100f);
     }
 
     private void drawSmiley(Canvas canvas) {
-        canvas.drawOval(ovalRect, paint);
+        canvas.drawOval(0, 0, 100, 100, facePaint);
+        if (canvas.getSaveCount() <= 3) {
+            drawSmiley(canvas, 23, 33, 14, 14);
+            drawSmiley(canvas, 63, 33, 14, 14);
+        }
+        canvas.drawCircle(30, 40, 7, outlinePaint);
+        canvas.drawCircle(70, 40, 7, outlinePaint);
+        canvas.drawArc(20, 20, 80, 80, 30, 120, false, outlinePaint);
     }
 
 }
