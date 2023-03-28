@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.widget.Switch;
 
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView reactionTextView;
     private EditText nameEditText;
     private Switch immediateSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
