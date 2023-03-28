@@ -2,20 +2,18 @@ package kr.ac.tukorea.myapplication.samplegame2018182031;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Choreographer;
+import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Handler;
 
 /**
@@ -23,8 +21,8 @@ import java.util.logging.Handler;
  */
 public class GameView extends View implements Choreographer.FrameCallback {
     private static final String TAG = GameView.class.getSimpleName();
-    private Bitmap soccerBitmap;
-    private RectF soccerRect = new RectF();
+    private ArrayList<IGameObject> objects = new ArrayList<>();
+    private Fighter fighter;
     private float scale;
 
 
@@ -45,12 +43,23 @@ public class GameView extends View implements Choreographer.FrameCallback {
 
     private void init(AttributeSet attrs, int defStyle) {
         Resources res = getResources();
-        soccerBitmap = BitmapFactory.decodeResource(res, R.mipmap.soccer_ball_240);
 
-        float cx = 5.0f, cy = 7.0f;
-        float radius = 1.25f;
-        soccerRect.set(cx - radius, cy - radius, cx + radius, cy + radius);
+        Bitmap soccerBitmap = BitmapFactory.decodeResource(res, R.mipmap.soccer_ball_240);
+        Ball.setBitmap(soccerBitmap);
+        Bitmap fighterBitmap = BitmapFactory.decodeResource(res, R.mipmap.plane_240);
+        Fighter.setBitmap(fighterBitmap);
 
+        Random r = new Random();
+        for (int i = 0; i < 10; i++) {
+            float dx = r.nextFloat() * 0.05f + 0.03f;
+            float dy = r.nextFloat() * 0.05f + 0.03f;
+            objects.add(new Ball(dx, dy));
+        }
+
+        fighter = new Fighter();
+        objects.add(fighter);
+
+        Choreographer.getInstance().postFrameCallback(this);
     }
 
     @Override
@@ -63,8 +72,10 @@ public class GameView extends View implements Choreographer.FrameCallback {
     }
 
     private void update() {
-        soccerRect.offset(0.01f, 0.01f);
-        Log.d(TAG, "soccerRect=" + soccerRect);
+        for (IGameObject gobj : objects) {
+            gobj.update();
+        }
+        //fighter.update();
     }
 
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -79,7 +90,24 @@ public class GameView extends View implements Choreographer.FrameCallback {
 
         canvas.scale(scale, scale);
 
-        canvas.drawBitmap(soccerBitmap, null, soccerRect, null);
+        for (IGameObject gobj : objects) {
+            gobj.draw(canvas);
+        }
+
+//        fighter.draw(canvas);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+       switch (action){
+           case MotionEvent.ACTION_DOWN:
+           case MotionEvent.ACTION_MOVE:
+               float x = (float) event.getX() / scale;
+               float y = (float) event.getY() / scale;
+               fighter.setPosition(x, y);
+               return true;
+       }
+        return super.onTouchEvent(event);
+    }
 }
