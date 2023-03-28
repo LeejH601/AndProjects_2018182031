@@ -12,14 +12,20 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Choreographer;
 import android.view.View;
+
+import java.util.logging.Handler;
 
 /**
  * TODO: document your custom view class.
  */
-public class GameView extends View {
+public class GameView extends View implements Choreographer.FrameCallback {
+    private static final String TAG = GameView.class.getSimpleName();
     private Bitmap soccerBitmap;
     private RectF soccerRect = new RectF();
+    private float scale;
 
 
     public GameView(Context context) {
@@ -40,20 +46,39 @@ public class GameView extends View {
     private void init(AttributeSet attrs, int defStyle) {
         Resources res = getResources();
         soccerBitmap = BitmapFactory.decodeResource(res, R.mipmap.soccer_ball_240);
+
+        float cx = 5.0f, cy = 7.0f;
+        float radius = 1.25f;
+        soccerRect.set(cx - radius, cy - radius, cx + radius, cy + radius);
+
+    }
+
+    @Override
+    public void doFrame(long nanos) {
+        update();
+        invalidate();
+        if (isShown()) {
+            Choreographer.getInstance().postFrameCallback(this);
+        }
+    }
+
+    private void update() {
+        soccerRect.offset(0.01f, 0.01f);
+        Log.d(TAG, "soccerRect=" + soccerRect);
+    }
+
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        scale = w / 10.0f;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float scale = getWidth() / 10.0f;
         canvas.scale(scale, scale);
 
-        float height = getHeight() / scale;
-
-        float cx = 5.0f, cy = height / 2.0f;
-        float radius = 1.25f;
-        soccerRect.set(cx - radius, cy - radius, cx + radius, cy + radius);
         canvas.drawBitmap(soccerBitmap, null, soccerRect, null);
     }
 
