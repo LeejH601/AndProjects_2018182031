@@ -1,16 +1,22 @@
 package kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.BuildConfig;
 import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.game.Bullet;
 
 public class BaseScene {
     private static ArrayList<BaseScene> stack = new ArrayList<>();
     public static float frameTime;
     protected static Handler handler = new Handler();
+    private static Paint bboxPaint;
 
     public static BaseScene getTopScene() {
         int top = stack.size() - 1;
@@ -58,6 +64,20 @@ public class BaseScene {
     public void draw(Canvas canvas) {
         for (IGameObject gobj : objects) {
             gobj.draw(canvas);
+        }
+
+        if (BuildConfig.DEBUG) {
+            if (bboxPaint == null) {
+                bboxPaint = new Paint();
+                bboxPaint.setStyle(Paint.Style.STROKE);
+                bboxPaint.setColor(Color.RED);
+            }
+            for (IGameObject gobj : objects) {
+                if (gobj instanceof IBoxCollidable) {
+                    RectF rect = ((IBoxCollidable) gobj).getCollisionRect();
+                    canvas.drawRect(rect, bboxPaint);
+                }
+            }
         }
     }
 

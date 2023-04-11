@@ -2,10 +2,18 @@ package kr.ac.tukorea.myapplication.dragonflight2018182031spgp.game;
 
 import android.graphics.RectF;
 
-import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework.IGameObject;
+import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework.IBoxCollidable;
 
 public class CollisionHelper {
-    public static boolean collides(IGameObject obj1, IGameObject obj2) {
-        return false;
+    public static boolean collides(IBoxCollidable obj1, IBoxCollidable obj2) {
+        RectF r1 = obj1.getCollisionRect();
+        RectF r2 = obj2.getCollisionRect();
+
+        if (r1.left > r2.right) return false;
+        if (r1.top > r2.bottom) return false;
+        if (r1.right < r2.left) return false;
+        if (r1.bottom < r2.top) return false;
+
+        return true;
     }
 }
