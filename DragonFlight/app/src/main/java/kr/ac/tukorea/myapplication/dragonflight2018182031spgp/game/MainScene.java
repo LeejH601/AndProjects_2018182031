@@ -1,48 +1,37 @@
 package kr.ac.tukorea.myapplication.dragonflight2018182031spgp.game;
 
-import android.util.Log;
 import android.view.MotionEvent;
 
+import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.R;
 import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework.BaseScene;
-import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework.IGameObject;
+import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework.CollisionChecker;
 import kr.ac.tukorea.myapplication.dragonflight2018182031spgp.framework.Metrics;
+
 
 public class MainScene extends BaseScene {
     private static final String TAG = MainScene.class.getSimpleName();
     private final Fighter fighter;
 
+    public enum Layer {
+        bg1, enemy, bullet, player, bg2, ui, controller, COUNT
+    }
+    private Score score;
     public MainScene() {
+        initLayers(Layer.COUNT);
         fighter = new Fighter();
-        add(fighter);
-        add(new EnemyGenerator());
+        add(Layer.player, fighter);
+        add(Layer.bg1, new VertScrollBackground(R.mipmap.bg_city, 0.2f));
+        add(Layer.bg2, new VertScrollBackground(R.mipmap.clouds, 0.4f));
+        score = new Score();
+        add(Layer.ui, score);
+        add(Layer.controller, new EnemyGenerator());
+        add(Layer.controller, new CollisionChecker());
     }
-    @Override
-    public void update(long elapsedNanos) {
-        super.update(elapsedNanos);
-        checkCollision();
+    public void addScore(int amount) {
+        score.add(amount);
     }
-
-    private void checkCollision() {
-        for (IGameObject o1 : objects) {
-            if (!(o1 instanceof Enemy)) {
-                continue;
-            }
-            Enemy enemy = (Enemy) o1;
-//            boolean removed = false;
-            for (IGameObject o2 : objects) {
-                if (!(o2 instanceof Bullet)) {
-                    continue;
-                }
-                Bullet bullet = (Bullet) o2;
-                if (CollisionHelper.collides(enemy, bullet)) {
-                    Log.d(TAG, "Collision !!");
-                    remove(bullet);
-                    remove(enemy);
-//                    removed = true;
-                    break;
-                }
-            }
-        }
+    public int getScore() {
+        return score.getScore();
     }
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();

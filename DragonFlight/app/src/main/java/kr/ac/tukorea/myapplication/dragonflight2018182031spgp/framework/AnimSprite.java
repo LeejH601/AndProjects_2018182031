@@ -33,6 +33,7 @@ public class AnimSprite extends Sprite {
         float time = (now - createdOn) / 1000.0f;
         int frameIndex = Math.round(time * fps) % frameCount;
         srcRect.set(frameIndex * frameWidth, 0, (frameIndex + 1) * frameWidth, frameHeight);
+
         canvas.drawBitmap(bitmap, srcRect, dstRect, null);
     }
 }

@@ -15,7 +15,7 @@ public class EnemyGenerator implements IGameObject {
     private int wave;
     @Override
     public void update() {
-        time += BaseScene.frameTime * 5;
+        time += BaseScene.frameTime;
         if (time > GEN_INTERVAL) {
             generate();
             time -= GEN_INTERVAL;
@@ -31,7 +31,7 @@ public class EnemyGenerator implements IGameObject {
             int level = (wave + 15) / 10 - r.nextInt(3);
             if (level < 0) level = 0;
             if (level > Enemy.MAX_LEVEL) level = Enemy.MAX_LEVEL;
-            scene.add(new Enemy(i, level));
+            scene.add(MainScene.Layer.enemy, Enemy.get(i, level));
         }
     }
 
