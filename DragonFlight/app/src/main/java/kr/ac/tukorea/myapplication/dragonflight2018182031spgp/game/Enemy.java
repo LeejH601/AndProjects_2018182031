@@ -37,6 +37,7 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
         if (enemy != null) {
             enemy.x = (Metrics.game_width / 10) * (2 * index + 1);
             enemy.y = -SIZE/2;
+            enemy.fixDstRect();
             enemy.init(level);
             return enemy;
         }
@@ -62,7 +63,7 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
         fixDstRect();
 
         if (dstRect.top > 16.0) {
-            BaseScene.getTopScene().remove(this);
+            BaseScene.getTopScene().remove(MainScene.Layer.enemy, this);
         }
         collisionRect.set(dstRect);
         collisionRect.inset(0.11f, 0.11f);

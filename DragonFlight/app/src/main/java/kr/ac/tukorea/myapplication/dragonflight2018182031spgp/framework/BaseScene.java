@@ -47,15 +47,40 @@ public class BaseScene {
             layers.add(new ArrayList<>());
         }
     }
-
-    public <E extends Enum<E>> void add(E layerEnum, IGameObject gobj) {
+    public <E extends Enum<E>> void add(E layerEnum, IGameObject gobj, boolean immediate) {
+        if (immediate) {
+            add(layerEnum, gobj);
+            return;
+        }
         handler.post(new Runnable() {
             @Override
             public void run() {
-                ArrayList<IGameObject> objects = layers.get(layerEnum.ordinal());
-                objects.add(gobj);
+                add(layerEnum, gobj);
             }
         });
+    }
+    public <E extends Enum<E>> void add(E layerEnum, IGameObject gobj) {
+        ArrayList<IGameObject> objects = layers.get(layerEnum.ordinal());
+        objects.add(gobj);
+    }
+    public <E extends Enum> void remove(E layerEnum, IGameObject gobj, boolean immediate) {
+        if (immediate) {
+            remove(layerEnum, gobj);
+            return;
+        }
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                remove(layerEnum, gobj);
+            }
+        });
+    }
+
+    public <E extends Enum> void remove(E layerEnum, IGameObject gobj) {
+        boolean removed = getObjectsAt(layerEnum).remove(gobj);
+        if (removed && gobj instanceof IRecyclable) {
+            RecycleBin.collect((IRecyclable) gobj);
+        }
     }
 
     public int count() {
@@ -69,7 +94,8 @@ public class BaseScene {
     public void update(long elapsedNanos) {
         frameTime = elapsedNanos / 1_000_000_000f;
         for (ArrayList<IGameObject> objects: layers) {
-            for (IGameObject gobj : objects) {
+            for (int i = objects.size() - 1; i >= 0; i--) {
+                IGameObject gobj = objects.get(i);
                 gobj.update();
             }
         }
@@ -122,5 +148,8 @@ public class BaseScene {
                 }
             }
         });
+    }
+    public boolean clipsRect() {
+        return true;
     }
 }

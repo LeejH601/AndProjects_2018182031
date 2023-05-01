@@ -49,7 +49,7 @@ public class Bullet extends Sprite implements IBoxCollidable, IRecyclable {
         fixDstRect();
 
         if (dstRect.bottom < 0) {
-            BaseScene.getTopScene().remove(this);
+            BaseScene.getTopScene().remove(MainScene.Layer.bullet, this);
         }
     }
     @Override

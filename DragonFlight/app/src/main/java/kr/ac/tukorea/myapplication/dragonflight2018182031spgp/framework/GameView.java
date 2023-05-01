@@ -36,7 +36,9 @@ public class GameView extends View implements Choreographer.FrameCallback {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
-
+    public void setFullScreen() {
+        setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
     private void init(AttributeSet attrs, int defStyle) {
         GameView.res = getResources();
         running = true;
@@ -52,6 +54,7 @@ public class GameView extends View implements Choreographer.FrameCallback {
             borderPaint.setStyle(Paint.Style.STROKE);
             borderPaint.setStrokeWidth(0.1f);
         }
+        //setFullScreen();
     }
 
     private long previousNanos;
@@ -97,6 +100,9 @@ public class GameView extends View implements Choreographer.FrameCallback {
         canvas.scale(Metrics.scale, Metrics.scale);
         BaseScene scene = BaseScene.getTopScene();
         if (scene != null) {
+            if (scene.clipsRect()) {
+                canvas.clipRect(0, 0, Metrics.game_width, Metrics.game_height);
+            }
             scene.draw(canvas);
         }
 
