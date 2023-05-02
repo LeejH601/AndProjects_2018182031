@@ -1,36 +1,71 @@
 package kr.ac.tukorea.myapplication.cookierun2018182031.game;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import java.util.Random;
 
 import kr.ac.tukorea.myapplication.cookierun2018182031.R;
 import kr.ac.tukorea.myapplication.cookierun2018182031.framework.BaseScene;
+import kr.ac.tukorea.myapplication.cookierun2018182031.framework.Button;
 import kr.ac.tukorea.myapplication.cookierun2018182031.framework.Metrics;
+import kr.ac.tukorea.myapplication.cookierun2018182031.framework.Sprite;
 
 public class MainScene extends BaseScene {
+    private static final String TAG = MainScene.class.getSimpleName();
     private final Player player;
     public enum Layer {
-        bg, platform, item, player, controller, COUNT
+        bg, platform, item, player, ui, touch, controller, COUNT
     }
     public MainScene() {
         Metrics.setGameSize(16.0f, 9.0f);
         initLayers(Layer.COUNT);
 
-        add(Layer.bg, new VertScrollBackground(R.mipmap.cookie_run_bg_1, 1.0f));
-        add(Layer.bg, new VertScrollBackground(R.mipmap.cookie_run_bg_2, 2.0f));
-        add(Layer.bg, new VertScrollBackground(R.mipmap.cookie_run_bg_3, 3.0f));
-
-        add(Layer.controller, new MapLoader());
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_1, -0.2f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_2, -0.4f));
+        add(Layer.bg, new HorzScrollBackground(R.mipmap.cookie_run_bg_3, -0.6f));
 
         player = new Player();
         add(Layer.player, player);
+
+        add(Layer.touch, new Button(R.mipmap.btn_slide_n, 1.5f, 8.0f, 2.0f, 0.75f, new Button.Callback() {
+            @Override
+            public boolean onTouch(Button.Action action) {
+                //Log.d(TAG, "Button: Slide");
+                player.slide(action == Button.Action.pressed);
+                return true;
+            }
+        }));
+        add(Layer.touch, new Button(R.mipmap.btn_jump_n, 14.5f, 7.7f, 2.0f, 0.75f, new Button.Callback() {
+            @Override
+            public boolean onTouch(Button.Action action) {
+                if (action == Button.Action.pressed) {
+                    player.jump();
+                }
+                return true;
+            }
+        }));
+        add(Layer.touch, new Button(R.mipmap.btn_fall_n, 14.5f, 8.5f, 2.0f, 0.75f, new Button.Callback() {
+            @Override
+            public boolean onTouch(Button.Action action) {
+                if (action == Button.Action.pressed) {
+                    player.fall();
+                }
+                return true;
+            }
+        }));
+
+        add(Layer.controller, new MapLoader());
+        add(Layer.controller, new CollisionChecker(player));
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            player.jump();
-        }
-        return super.onTouchEvent(event);
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            player.jump();
+//        }
+//        return super.onTouchEvent(event);
+//    }
+    protected int getTouchLayerIndex() {
+        return Layer.touch.ordinal();
     }
 }

@@ -129,8 +129,22 @@ public class BaseScene {
         return layers.get(layerEnum.ordinal());
     }
     public boolean onTouchEvent(MotionEvent event) {
+        int touchLayer = getTouchLayerIndex();
+        if (touchLayer < 0) return false;
+        ArrayList<IGameObject> gameObjects = layers.get(touchLayer);
+        for (IGameObject gobj : gameObjects) {
+            if (!(gobj instanceof ITouchable)) {
+                continue;
+            }
+            boolean processed = ((ITouchable) gobj).onTouchEvent(event);
+            if (processed) return true;
+        }
         return false;
     }
+    protected int getTouchLayerIndex() {
+        return -1;
+    }
+
 
     public void remove(IGameObject gobj) {
         handler.post(new Runnable() {
