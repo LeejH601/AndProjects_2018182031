@@ -12,12 +12,13 @@ public class MainScene extends BaseScene {
     private static final String TAG = MainScene.class.getSimpleName();
     private final Player player;
     public enum Layer {
-        bg, platform, item, player, ui, touch, controller, COUNT
+        bg, platform, item, enemy, player, ui, touch, controller, COUNT
     }
     public MainScene() {
         Metrics.setGameSize(9.0f, 16.0f);
         initLayers(Layer.COUNT);
 
+        add(Layer.controller, new EnemyGenerator());
         player = new Player();
         add(Layer.player, player);
     }

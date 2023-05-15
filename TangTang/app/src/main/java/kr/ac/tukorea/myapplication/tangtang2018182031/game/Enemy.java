@@ -1,6 +1,7 @@
 package kr.ac.tukorea.myapplication.tangtang2018182031.game;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import kr.ac.tukorea.myapplication.tangtang2018182031.R;
@@ -17,19 +18,34 @@ import kr.ac.tukorea.myapplication.tangtang2018182031.framework.RecycleBin;
 public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     private static final String TAG = Enemy.class.getSimpleName();
     private static final int[] resIds = {
-            R.mipmap.enemy_01, R.mipmap.enemy_02, R.mipmap.enemy_03, R.mipmap.enemy_04, R.mipmap.enemy_05,
-            R.mipmap.enemy_06, R.mipmap.enemy_07, R.mipmap.enemy_08, R.mipmap.enemy_09, R.mipmap.enemy_10,
-            R.mipmap.enemy_11, R.mipmap.enemy_12, R.mipmap.enemy_13, R.mipmap.enemy_14, R.mipmap.enemy_15,
-            R.mipmap.enemy_16, R.mipmap.enemy_17, R.mipmap.enemy_18, R.mipmap.enemy_19, R.mipmap.enemy_20,
+            R.mipmap.pngwing,
     };
     public static final int MAX_LEVEL = resIds.length - 1;
     private static final float SPEED = 2.0f;
     public static final float SIZE = 1.8f;
     private int level;
     protected int life, maxLife;
+    protected enum State {
+        idle, COUNT
+    }
+    protected State state = State.idle;
+
+    protected static Rect[][] srcRects = {
+            makeRects(101, 101, 102, 103,104,105), // State.idle
+    };
+
+    protected static Rect[] makeRects(int... indices) {
+        Rect[] rects = new Rect[indices.length];
+        for (int i = 0; i < indices.length; i++) {
+            int idx = indices[i];
+            int l = (idx % 100) * 119;
+            int t = (idx / 100) * 130;
+            rects[i] = new Rect(l, t, l + 120, t + 130);
+        }
+        return rects;
+    }
 
     protected RectF collisionRect = new RectF();
-    protected Gauge gauge = new Gauge(0.1f, R.color.enemy_gauge_fg, R.color.enemy_gauge_bg);
    // protected static ArrayList<Enemy> recycleBin = new ArrayList<>();
 
     static Enemy get(int index, int level) {
@@ -49,11 +65,8 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
     }
 
     private void init(int level) {
-        if (level != this.level) {
-            this.level = level;
-            this.bitmap = BitmapPool.get(resIds[level]);
-        }
-        this.life = this.maxLife = (level + 1) * 10;
+        this.bitmap = BitmapPool.get(resIds[level]);
+        this.life = this.maxLife = (1) * 10;
     }
 
     @Override
@@ -71,13 +84,11 @@ public class Enemy extends AnimSprite implements IBoxCollidable, IRecyclable {
 
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
-        canvas.save();
-        float width = dstRect.width() * 0.75f;
-        canvas.translate(x - width / 2, dstRect.bottom);
-        canvas.scale(width, width);
-        gauge.draw(canvas, (float)life / maxLife);
-        canvas.restore();
+        long now = System.currentTimeMillis();
+        float time = (now - createdOn) / 1000.0f;
+        Rect[] rects = srcRects[state.ordinal()];
+        int frameIndex = Math.round(time * fps) % rects.length;
+        canvas.drawBitmap(bitmap, rects[frameIndex], dstRect, null);
     }
 
 
